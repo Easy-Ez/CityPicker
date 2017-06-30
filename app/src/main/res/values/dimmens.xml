@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="itemPadding">12dp</dimen>
+    <dimen name="itemSpace">12dp</dimen>
+    <dimen name="naviBarWidth">40dp</dimen>
+</resources>
