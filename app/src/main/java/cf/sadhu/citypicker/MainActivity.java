@@ -4,14 +4,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import cf.sadhu.citypicker.adapter.CityAdapter;
 import cf.sadhu.citypicker.domain.City;
+import cf.sadhu.citypicker.domain.NaviInfo;
 import cf.sadhu.citypicker.itemDecoration.FloatTagItemDecoration;
 import cf.sadhu.citypicker.view.CityNaviBarView;
 
@@ -21,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRvCity;
     private CityNaviBarView mNaviBarView;
     private CityAdapter mCityAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +34,17 @@ public class MainActivity extends AppCompatActivity {
         mDbManager = new DBManager();
         Toast.makeText(this, mDbManager.initCityDB(this) ? "初始化成功" : "初始化失败", Toast.LENGTH_SHORT).show();
         mRvCity = (RecyclerView) findViewById(R.id.rv_city_list);
-        mRvCity.setLayoutManager(new LinearLayoutManager(this));
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mRvCity.setLayoutManager(mLinearLayoutManager);
         mRvCity.addItemDecoration(new FloatTagItemDecoration(this));
         mNaviBarView = (CityNaviBarView) findViewById(R.id.navibar);
+        mNaviBarView.setOnNaviItemSelectListener(new CityNaviBarView.OnNaviItemSelectListener() {
+            @Override
+            public void OnNaviItemSelect(String tag, int position) {
+                Log.i(TAG, "OnNaviItemSelect tag: " + tag + ";position:" + position);
+                mLinearLayoutManager.scrollToPositionWithOffset(position, 0);
+            }
+        });
     }
 
     public void pullCites(View view) {
@@ -43,15 +56,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private List<String> getTagList(List<City> cityList) {
-        List<String> tags = new ArrayList<>();
-        tags.add(String.valueOf(cityList.get(0).getFirstChar()).toUpperCase());
+    private Map<String, NaviInfo> getTagList(List<City> cityList) {
+
+        Map<String, NaviInfo> naviMap = new LinkedHashMap<>();
+
+        naviMap.put("定位", new NaviInfo(0));
+        naviMap.put("热门", new NaviInfo(1));
+        naviMap.put(String.valueOf(cityList.get(0).getFirstChar()).toUpperCase(),
+                new NaviInfo(2));
         for (int i = 1; i < cityList.size(); i++) {
             if (cityList.get(i).getFirstChar() != cityList.get(i - 1).getFirstChar()) {
-                tags.add(String.valueOf(cityList.get(i).getFirstChar()).toUpperCase());
+                naviMap.put(String.valueOf(cityList.get(i).getFirstChar()).toUpperCase(),
+                        new NaviInfo(i + 2));
             }
         }
-        return tags;
+        return naviMap;
     }
 
 }

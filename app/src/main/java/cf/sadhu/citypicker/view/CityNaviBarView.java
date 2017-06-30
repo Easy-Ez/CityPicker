@@ -4,17 +4,20 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import cf.sadhu.citypicker.R;
-import cf.sadhu.citypicker.util.UIUtils;
+import cf.sadhu.citypicker.domain.NaviInfo;
 
 /**
  * Created by sadhu on 2017/6/30.
@@ -33,8 +36,9 @@ public class CityNaviBarView extends View {
     private int mDefualtHeight;
     private int mSpace;
     private Paint mTextPaint;
-    private List<String> mTagList = new ArrayList<>();
-
+    private Map<String, NaviInfo> mNaviMap = new HashMap<>();
+    private OnNaviItemSelectListener mOnNaviItemSelectListener;
+    private int selectPostion = -1;
 
     public CityNaviBarView(Context context) {
         this(context, null);
@@ -54,7 +58,6 @@ public class CityNaviBarView extends View {
         mTextPaint.setAntiAlias(true);
         mTextPaint.setTextSize(mTextSize);
         mTextPaint.setColor(mTextColor);
-
     }
 
     private void initDefaultValue() {
@@ -64,7 +67,7 @@ public class CityNaviBarView extends View {
         mSelectTextSize = ContextCompat.getColor(getContext(), R.color.color33);
         mDefualtWidth = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getContext().getResources().getDisplayMetrics()) + 0.5f);
         mDefualtHeight = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getContext().getResources().getDisplayMetrics()) + 0.5f);
-        mSpace = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getContext().getResources().getDisplayMetrics()) + 0.5f);
+        mSpace = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getContext().getResources().getDisplayMetrics()) + 0.5f);
     }
 
 
@@ -78,7 +81,60 @@ public class CityNaviBarView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (mNaviMap.size() > 0) {
+            Paint.FontMetrics fm = mTextPaint.getFontMetrics();
+            float height = fm.bottom - fm.top;
+            float baseLine = (float) getPaddingTop() - fm.top;
+            Set<Map.Entry<String, NaviInfo>> entries = mNaviMap.entrySet();
+            for (Map.Entry<String, NaviInfo> entry : entries) {
+                if (entry.getValue().position == selectPostion) {
+                    mTextPaint.setColor(mSelectTextColor);
+                } else {
+                    mTextPaint.setColor(mTextColor);
+                }
+                canvas.drawText(entry.getKey(), getWidth() / 2 - mTextPaint.measureText(entry.getKey()) / 2, baseLine, mTextPaint);
+                mNaviMap.get(entry.getKey()).bottom = baseLine + fm.bottom;
+                mNaviMap.get(entry.getKey()).top = baseLine + fm.top;
+                baseLine = (baseLine + height + mSpace);
+            }
+        }
 
+    }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                searchHitItem(event.getY());
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                searchHitItem(event.getY());
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                selectPostion = -1;
+                invalidate();
+                break;
+        }
+        return super.onTouchEvent(event);
+    }
+
+    private void searchHitItem(float y) {
+        if (y < 0 || y > getHeight()) {
+            return;
+        }
+        Set<Map.Entry<String, NaviInfo>> entries = mNaviMap.entrySet();
+        for (Map.Entry<String, NaviInfo> entry : entries) {
+            NaviInfo value = entry.getValue();
+            if (value.top <= y && value.bottom >= y) {
+                selectPostion = value.position;
+                invalidate(new Rect(0, (int) value.top, getWidth(), (int) value.bottom));
+                if (mOnNaviItemSelectListener != null)
+                    mOnNaviItemSelectListener.OnNaviItemSelect(entry.getKey(), value.position);
+                break;
+            }
+        }
     }
 
     /**
@@ -137,16 +193,17 @@ public class CityNaviBarView extends View {
      * @return
      */
     private int getTagMaxWidth() {
-        if (mTagList == null || mTagList.size() == 0) {
+        if (mNaviMap == null || mNaviMap.size() == 0) {
             return mDefualtWidth;
         } else {
             String maxLenghtItem = "";
-            for (int i = 0; i < mTagList.size(); i++) {
-                if (mTagList.get(i).length() > maxLenghtItem.length()) {
-                    maxLenghtItem = mTagList.get(i);
+            Set<String> strings = mNaviMap.keySet();
+            for (String chars : strings) {
+                if (chars.length() > maxLenghtItem.length()) {
+                    maxLenghtItem = chars;
                 }
             }
-            return UIUtils.getTextWidth(mTextPaint, maxLenghtItem);
+            return (int) mTextPaint.measureText(maxLenghtItem);
         }
     }
 
@@ -156,20 +213,25 @@ public class CityNaviBarView extends View {
      * @return
      */
     private int getTagLineHeight() {
-        if (mTagList == null || mTagList.size() == 0) {
+        if (mNaviMap == null || mNaviMap.size() == 0) {
             return mDefualtHeight;
         } else {
             Paint.FontMetrics fm = mTextPaint.getFontMetrics();
-            float height = fm.bottom - fm.top + fm.leading;
-            return (int) (height * mTagList.size()) + (mSpace * mTagList.size() - 1);
+            float height = fm.bottom - fm.top;
+            return (int) (height * mNaviMap.size()) + (mSpace * mNaviMap.size() - 1);
         }
     }
 
-    public void setTagList(List<String> tags) {
-        this.mTagList.clear();
-        this.mTagList.addAll(tags);
+    public void setTagList(Map<String, NaviInfo> map) {
+        this.mNaviMap = map;
         requestLayout();
     }
 
+    public void setOnNaviItemSelectListener(OnNaviItemSelectListener listener) {
+        this.mOnNaviItemSelectListener = listener;
+    }
 
+    public static interface OnNaviItemSelectListener {
+        void OnNaviItemSelect(String tag, int position);
+    }
 }
