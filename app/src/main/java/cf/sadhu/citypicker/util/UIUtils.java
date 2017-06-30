@@ -1,6 +1,7 @@
 package cf.sadhu.citypicker.util;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.annotation.DimenRes;
 import android.util.TypedValue;
 
@@ -19,6 +20,18 @@ public class UIUtils {
 
     public static int getDimmens(Context context, @DimenRes int id) {
         return context.getResources().getDimensionPixelSize(id);
+    }
+    public static int getTextWidth(Paint mPaint, String str) {
+        float iSum = 0;
+        if (str != null && !str.equals("")) {
+            int len = str.length();
+            float widths[] = new float[len];
+            mPaint.getTextWidths(str, widths);
+            for (int i = 0; i < len; i++) {
+                iSum += Math.ceil(widths[i]);
+            }
+        }
+        return (int) iSum;
     }
 
 }

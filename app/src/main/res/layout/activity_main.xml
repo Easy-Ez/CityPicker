@@ -37,10 +37,11 @@
             android:scrollbars="vertical"
             tools:listitem="@layout/item_city_normal"/>
 
-        <View
+        <cf.sadhu.citypicker.view.CityNaviBarView
+            android:id="@+id/navibar"
             android:layout_width="@dimen/naviBarWidth"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
             android:background="#66000000"/>
     </FrameLayout>
 </LinearLayout>
