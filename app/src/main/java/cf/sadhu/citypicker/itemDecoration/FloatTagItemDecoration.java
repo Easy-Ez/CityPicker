@@ -95,7 +95,6 @@ public class FloatTagItemDecoration extends RecyclerView.ItemDecoration {
             int top = 0;
             // 判断是否达到临界点
             // (第一个可见item是每组的最后一个,第二个可见tiem是下一组的第一个,并且第一个可见item的底部小于header的高度)
-            Log.i(TAG, "onDrawOver: " + firstView.getBottom());
             if (((CityAdapter) parent.getAdapter()).isGropEndItem(firstPos)
                     && ((CityAdapter) parent.getAdapter()).isTag(secondPos)
                     && firstView.getBottom() + layoutParams.bottomMargin <= mHeadHeight) {

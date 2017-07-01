@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +17,7 @@ import cf.sadhu.citypicker.domain.City;
 import cf.sadhu.citypicker.domain.NaviInfo;
 import cf.sadhu.citypicker.itemDecoration.FloatTagItemDecoration;
 import cf.sadhu.citypicker.view.CityNaviBarView;
+import cf.sadhu.citypicker.view.NaviPopupWindow;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private CityNaviBarView mNaviBarView;
     private CityAdapter mCityAdapter;
     private LinearLayoutManager mLinearLayoutManager;
+    private NaviPopupWindow mPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +41,19 @@ public class MainActivity extends AppCompatActivity {
         mNaviBarView = (CityNaviBarView) findViewById(R.id.navibar);
         mNaviBarView.setOnNaviItemSelectListener(new CityNaviBarView.OnNaviItemSelectListener() {
             @Override
-            public void OnNaviItemSelect(String tag, int position) {
-                Log.i(TAG, "OnNaviItemSelect tag: " + tag + ";position:" + position);
+            public void onNaviItemSelect(String tag, int position) {
+                Log.i(TAG, "onNaviItemSelect tag: " + tag + ";position:" + position);
                 mLinearLayoutManager.scrollToPositionWithOffset(position, 0);
+                mPopupWindow.show(mRvCity, tag);
+            }
+
+            @Override
+            public void onNaviTouchUp() {
+                mPopupWindow.dismiss();
             }
         });
+        mPopupWindow = new NaviPopupWindow(this);
+
     }
 
     public void pullCites(View view) {

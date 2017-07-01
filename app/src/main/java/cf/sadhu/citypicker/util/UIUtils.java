@@ -10,8 +10,14 @@ import android.util.TypedValue;
  * 描述 ui 相关工具类
  */
 public class UIUtils {
+
+
     public static int getScreenWidth(Context context) {
         return context.getResources().getDisplayMetrics().widthPixels;
+    }
+
+    private static int getScreenHeight(Context context) {
+        return context.getResources().getDisplayMetrics().heightPixels;
     }
 
     public static int dp2px(Context context, float value) {
@@ -21,6 +27,7 @@ public class UIUtils {
     public static int getDimmens(Context context, @DimenRes int id) {
         return context.getResources().getDimensionPixelSize(id);
     }
+
     public static int getTextWidth(Paint mPaint, String str) {
         float iSum = 0;
         if (str != null && !str.equals("")) {
@@ -34,4 +41,27 @@ public class UIUtils {
         return (int) iSum;
     }
 
+    public static int getDisplayContentHeight(Context context) {
+        return getScreenHeight(context) - getStatusBarHeight(context) - getNaviBarHeight(context);
+    }
+
+    private static int getNaviBarHeight(Context context) {
+        // navigation bar height
+        int navigationBarHeight = 0;
+        int resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            navigationBarHeight = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return navigationBarHeight;
+    }
+
+
+    public static int getStatusBarHeight(Context context) {
+        int statusBarHeight = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return statusBarHeight;
+    }
 }

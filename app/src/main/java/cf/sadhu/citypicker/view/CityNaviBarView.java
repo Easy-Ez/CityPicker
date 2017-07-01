@@ -106,32 +106,37 @@ public class CityNaviBarView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                searchHitItem(event.getY());
+                searchHitItem(event.getX(), event.getY());
                 return true;
             case MotionEvent.ACTION_MOVE:
-                searchHitItem(event.getY());
+                searchHitItem(event.getX(), event.getY());
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 selectPostion = -1;
                 invalidate();
+                if (mOnNaviItemSelectListener != null) {
+                    mOnNaviItemSelectListener.onNaviTouchUp();
+                }
                 break;
         }
         return super.onTouchEvent(event);
     }
 
-    private void searchHitItem(float y) {
-        if (y < 0 || y > getHeight()) {
+
+    private void searchHitItem(float x, float y) {
+        if (x < 0 || y < 0 || y > getHeight()) {
             return;
         }
         Set<Map.Entry<String, NaviInfo>> entries = mNaviMap.entrySet();
         for (Map.Entry<String, NaviInfo> entry : entries) {
             NaviInfo value = entry.getValue();
             if (value.top <= y && value.bottom >= y) {
-                selectPostion = value.position;
                 invalidate(new Rect(0, (int) value.top, getWidth(), (int) value.bottom));
-                if (mOnNaviItemSelectListener != null)
-                    mOnNaviItemSelectListener.OnNaviItemSelect(entry.getKey(), value.position);
+                if (mOnNaviItemSelectListener != null && selectPostion != value.position) {
+                    mOnNaviItemSelectListener.onNaviItemSelect(entry.getKey(), value.position);
+                }
+                selectPostion = value.position;
                 break;
             }
         }
@@ -232,6 +237,8 @@ public class CityNaviBarView extends View {
     }
 
     public static interface OnNaviItemSelectListener {
-        void OnNaviItemSelect(String tag, int position);
+        void onNaviItemSelect(String tag, int position);
+
+        void onNaviTouchUp();
     }
 }
