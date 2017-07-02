@@ -15,7 +15,7 @@ import java.util.Map;
 import cf.sadhu.citypicker.adapter.CityAdapter;
 import cf.sadhu.citypicker.domain.City;
 import cf.sadhu.citypicker.domain.NaviInfo;
-import cf.sadhu.citypicker.itemDecoration.FloatTagItemDecoration;
+import cf.sadhu.citypicker.view.itemDecoration.FloatTagItemDecoration;
 import cf.sadhu.citypicker.view.CityNaviBarView;
 import cf.sadhu.citypicker.view.NaviPopupWindow;
 

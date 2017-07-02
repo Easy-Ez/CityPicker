@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import cf.sadhu.citypicker.R;
 import cf.sadhu.citypicker.adapter.HotCityAdapter;
 import cf.sadhu.citypicker.domain.City;
-import cf.sadhu.citypicker.itemDecoration.MyGridOffestDecoration;
+import cf.sadhu.citypicker.view.itemDecoration.MyGridOffestDecoration;
 import cf.sadhu.citypicker.util.UIUtils;
 
 /**

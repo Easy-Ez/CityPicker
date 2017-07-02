@@ -1,4 +1,4 @@
-package cf.sadhu.citypicker.itemDecoration;
+package cf.sadhu.citypicker.view.itemDecoration;
 
 import android.content.Context;
 import android.graphics.Canvas;
