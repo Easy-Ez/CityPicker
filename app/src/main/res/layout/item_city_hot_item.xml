@@ -7,5 +7,5 @@
           android:background="@drawable/shape_solid_00_stroke_e2_corners_4"
           android:gravity="center"
           android:padding="12dp"
-          android:textColor="#999999"
-          tool:text="定位中"/>
+          android:textColor="@color/color33"
+          tool:text="北京"/>

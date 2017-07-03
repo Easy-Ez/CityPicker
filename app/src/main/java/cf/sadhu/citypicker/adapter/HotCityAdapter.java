@@ -11,16 +11,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cf.sadhu.citypicker.R;
-import cf.sadhu.citypicker.domain.City;
+import cf.sadhu.citypicker.domain.ICity;
 
 /**
  * Created by sadhu on 2017/6/30.
  * 描述 热门城市
  */
 public class HotCityAdapter extends RecyclerView.Adapter<HotCityAdapter.HotCityVH> {
-    private List<City> mHotCities;
+    private List<ICity> mHotCities;
 
-    public HotCityAdapter(List<City> cities) {
+    public HotCityAdapter(List<ICity> cities) {
         mHotCities = cities;
     }
 
@@ -31,7 +31,7 @@ public class HotCityAdapter extends RecyclerView.Adapter<HotCityAdapter.HotCityV
 
     @Override
     public void onBindViewHolder(HotCityVH holder, int position) {
-        holder.mTvCity.setText(mHotCities.get(position).name);
+        holder.mTvCity.setText(mHotCities.get(position).getCityName());
     }
 
     @Override

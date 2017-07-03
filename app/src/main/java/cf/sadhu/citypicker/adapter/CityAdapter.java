@@ -8,6 +8,7 @@ import java.util.List;
 
 import cf.sadhu.citypicker.R;
 import cf.sadhu.citypicker.domain.City;
+import cf.sadhu.citypicker.domain.ICity;
 import cf.sadhu.citypicker.domain.LocationInfo;
 import cf.sadhu.citypicker.vh.CityHotVH;
 import cf.sadhu.citypicker.vh.CityLocationVH;
@@ -22,11 +23,11 @@ public class CityAdapter extends RecyclerView.Adapter {
     private static final int TYPE_HOT_CITY = 2;
     private static final int TYPE_NORMAL = 3;
 
-    private List<City> mHotCities;
-    private List<City> mNormalCities;
+    private List<ICity> mHotCities;
+    private List<ICity> mNormalCities;
     private LocationInfo mLocationInfo;
 
-    public CityAdapter(List<City> cityList) {
+    public CityAdapter(List<ICity> cityList) {
         this.mNormalCities = cityList;
     }
 
@@ -102,7 +103,7 @@ public class CityAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private City getItemByPosition(int position) {
+    private ICity getItemByPosition(int position) {
         return mNormalCities.get(position - getHeadSize());
     }
 
@@ -152,7 +153,7 @@ public class CityAdapter extends RecyclerView.Adapter {
 
     }
 
-    public void setHotCity(List<City> hotCity) {
+    public void setHotCity(List<ICity> hotCity) {
         if (mHotCities == null) {
             this.mHotCities = hotCity;
         } else {

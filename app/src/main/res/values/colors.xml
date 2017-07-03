@@ -4,8 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
+    <color name="baseBackgroundColor">@color/colorFA</color>
+
     <color name="color33">#333333</color>
     <color name="color33_transparent">#99000000</color>
     <color name="color99">#999999</color>
     <color name="colorE2">#E2E2E2</color>
+    <color name="colorFA">#FAFAFA</color>
 </resources>

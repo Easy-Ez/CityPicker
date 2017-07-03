@@ -2,13 +2,14 @@ package cf.sadhu.citypicker.view.itemDecoration;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 
+import cf.sadhu.citypicker.R;
 import cf.sadhu.citypicker.adapter.CityAdapter;
 
 /**
@@ -31,11 +32,11 @@ public class FloatTagItemDecoration extends RecyclerView.ItemDecoration {
                 context.getResources().getDisplayMetrics());
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.TRANSPARENT);
+        mPaint.setColor(ContextCompat.getColor(context, R.color.baseBackgroundColor));
 
         mTextPaint = new Paint();
         mTextPaint.setAntiAlias(true);
-        mTextPaint.setColor(Color.BLACK);
+        mTextPaint.setColor(ContextCompat.getColor(context, R.color.color33));
         mTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, context.getResources().getDisplayMetrics()));
     }
 

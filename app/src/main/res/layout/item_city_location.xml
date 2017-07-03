@@ -12,5 +12,5 @@
           android:gravity="center"
           android:minWidth="100dp"
           android:padding="12dp"
-          android:textColor="#999999"
+          android:textColor="@color/color33"
           tool:text="定位中"/>

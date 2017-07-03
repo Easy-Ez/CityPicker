@@ -14,19 +14,20 @@ import java.util.Collections;
 import java.util.List;
 
 import cf.sadhu.citypicker.domain.City;
+import cf.sadhu.citypicker.domain.ICity;
 
 /**
  * Created by sadhu on 2017/6/29.
  * 描述
  */
-public class DBManager {
+ class DBManager {
     private static final String DB_DIR_NAME = "databases";
     private static final String DB_NAME = "china_cities.db";
     private static final String TABLE_NAME = "city";
     private static final String COLUMN1 = "name";
     private static final String COLUMN2 = "pinyin";
 
-    public boolean initCityDB(Context ctx) {
+     boolean initCityDB(Context ctx) {
         File dbFile = new File(ctx.getFilesDir().getParentFile(), DB_DIR_NAME);
         if (!dbFile.exists() || !dbFile.isDirectory()) {
             return dbFile.mkdir() && copyDB(ctx, dbFile);
@@ -68,8 +69,8 @@ public class DBManager {
         }
     }
 
-    public List<City> getCityList(Context ctx) {
-        List<City> cities = new ArrayList<>();
+     List<ICity> getCityList(Context ctx) {
+        List<ICity> cities = new ArrayList<>();
         File databasePath = ctx.getDatabasePath(DB_NAME);
         SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(databasePath.getAbsolutePath(), null);
         Cursor query = sqLiteDatabase.query(TABLE_NAME,
@@ -78,14 +79,15 @@ public class DBManager {
                 null,
                 null,
                 null,
-                "pinyin desc");
+                //"pinyin desc");
+                "pinyin ASC");
         while (query.moveToNext()) {
             cities.add(new City(query.getString(query.getColumnIndex(COLUMN1)),
                     query.getString(query.getColumnIndex(COLUMN2))));
         }
-        if (cities.size() > 0) {
-            Collections.sort(cities);
-        }
+//        if (cities.size() > 0) {
+//            Collections.sort(cities);
+//        }
         query.close();
         sqLiteDatabase.close();
         return cities;

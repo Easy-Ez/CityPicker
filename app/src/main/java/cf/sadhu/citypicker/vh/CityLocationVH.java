@@ -36,7 +36,7 @@ public class CityLocationVH extends RecyclerView.ViewHolder {
         if (info == null || info.mStatus == 0) {
             mLocationName.setText("正在定位...");
         } else if (info.mStatus == 1 && info.mCity != null) {
-            mLocationName.setText(info.mCity.name);
+            mLocationName.setText(info.mCity.getCityName());
         } else {
             mLocationName.setText("定位失败");
         }

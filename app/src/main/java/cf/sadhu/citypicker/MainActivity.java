@@ -14,10 +14,11 @@ import java.util.Map;
 
 import cf.sadhu.citypicker.adapter.CityAdapter;
 import cf.sadhu.citypicker.domain.City;
+import cf.sadhu.citypicker.domain.ICity;
 import cf.sadhu.citypicker.domain.NaviInfo;
-import cf.sadhu.citypicker.view.itemDecoration.FloatTagItemDecoration;
 import cf.sadhu.citypicker.view.CityNaviBarView;
 import cf.sadhu.citypicker.view.NaviPopupWindow;
+import cf.sadhu.citypicker.view.itemDecoration.FloatTagItemDecoration;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void pullCites(View view) {
-        List<City> cityList = mDbManager.getCityList(this);
+        List<ICity> cityList = mDbManager.getCityList(this);
         mCityAdapter = new CityAdapter(cityList);
         mCityAdapter.setHotCity(cityList.subList(0, 7));
         mRvCity.setAdapter(mCityAdapter);
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private Map<String, NaviInfo> getTagList(List<City> cityList) {
+    private Map<String, NaviInfo> getTagList(List<ICity> cityList) {
 
         Map<String, NaviInfo> naviMap = new LinkedHashMap<>();
 

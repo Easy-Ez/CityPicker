@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import cf.sadhu.citypicker.R;
 import cf.sadhu.citypicker.adapter.HotCityAdapter;
 import cf.sadhu.citypicker.domain.City;
+import cf.sadhu.citypicker.domain.ICity;
 import cf.sadhu.citypicker.view.itemDecoration.MyGridOffestDecoration;
 import cf.sadhu.citypicker.util.UIUtils;
 
@@ -23,7 +24,7 @@ import cf.sadhu.citypicker.util.UIUtils;
 public class CityHotVH extends RecyclerView.ViewHolder {
     @BindView(R.id.rv_hot_city_list)
     RecyclerView mRvHot;
-    private List<City> mHotCities;
+    private List<ICity> mHotCities;
 
     public CityHotVH(View itemView) {
         super(itemView);
@@ -39,7 +40,7 @@ public class CityHotVH extends RecyclerView.ViewHolder {
         mRvHot.setAdapter(new HotCityAdapter(mHotCities));
     }
 
-    public void bindData(List<City> cities) {
+    public void bindData(List<ICity> cities) {
         mHotCities.clear();
         mHotCities.addAll(cities);
         mRvHot.getAdapter().notifyDataSetChanged();

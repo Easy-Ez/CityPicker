@@ -1,14 +1,12 @@
 package cf.sadhu.citypicker.domain;
 
-import android.support.annotation.NonNull;
-
 /**
  * Created by sadhu on 2017/6/29.
  * 描述: 城市实体
  */
-public class City implements Comparable<City> {
-    public String name;
-    public String pinYin;
+public class City implements /*Comparable<City> ,*/ICity {
+    private String name;
+    private String pinYin;
 
     public City(String name, String pinYin) {
         this.name = name;
@@ -23,12 +21,23 @@ public class City implements Comparable<City> {
                 '}';
     }
 
+    @Override
     public char getFirstChar() {
         return pinYin.charAt(0);
     }
 
-    @Override
+    /*@Override
     public int compareTo(@NonNull City o) {
         return this.pinYin.compareTo(o.pinYin);
+    }*/
+
+    @Override
+    public String getCityName() {
+        return name;
+    }
+
+    @Override
+    public String getCityPinYin() {
+        return pinYin;
     }
 }

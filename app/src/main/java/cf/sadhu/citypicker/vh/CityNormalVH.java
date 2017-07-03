@@ -7,7 +7,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cf.sadhu.citypicker.R;
-import cf.sadhu.citypicker.domain.City;
+import cf.sadhu.citypicker.domain.ICity;
 
 /**
  * Created by sadhu on 2017/6/29.
@@ -22,7 +22,7 @@ public class CityNormalVH extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bindData(City city) {
-        mCityName.setText(city.name);
+    public void bindData(ICity city) {
+        mCityName.setText(city.getCityName());
     }
 }
