@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import cf.sadhu.citypicker.R;
-import cf.sadhu.citypicker.domain.City;
 import cf.sadhu.citypicker.domain.ICity;
 import cf.sadhu.citypicker.domain.LocationInfo;
+import cf.sadhu.citypicker.domain.LocationStatus;
 import cf.sadhu.citypicker.vh.CityHotVH;
 import cf.sadhu.citypicker.vh.CityLocationVH;
 import cf.sadhu.citypicker.vh.CityNormalVH;
@@ -27,8 +27,9 @@ public class CityAdapter extends RecyclerView.Adapter {
     private List<ICity> mNormalCities;
     private LocationInfo mLocationInfo;
 
-    public CityAdapter(List<ICity> cityList) {
+    public CityAdapter(List<ICity> cityList, LocationInfo info) {
         this.mNormalCities = cityList;
+        this.mLocationInfo = info;
     }
 
     @Override
@@ -160,6 +161,33 @@ public class CityAdapter extends RecyclerView.Adapter {
             this.mHotCities.clear();
             this.mHotCities.addAll(hotCity);
         }
+        notifyDataSetChanged();
     }
 
+    /**
+     * 权限被拒
+     */
+    public void permissionDenied() {
+        mLocationInfo.mStatus = LocationStatus.STATUS_PERMISSION_ERROR;
+        notifyItemChanged(0);
+    }
+
+    /**
+     * 定位出错
+     */
+    public void locationError() {
+        mLocationInfo.mStatus = LocationStatus.STATUS_LOCATION_ERROR;
+        notifyItemChanged(0);
+    }
+
+    /**
+     * 定位成功
+     *
+     * @param iCity
+     */
+    public void locationSuccess(ICity iCity) {
+        mLocationInfo.mStatus = LocationStatus.STATUS_SUCCESS;
+        mLocationInfo.mCity = iCity;
+        notifyItemChanged(0);
+    }
 }

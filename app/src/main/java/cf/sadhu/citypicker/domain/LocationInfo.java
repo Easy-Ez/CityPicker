@@ -5,6 +5,6 @@ package cf.sadhu.citypicker.domain;
  * 描述 定位信息
  */
 public class LocationInfo {
-    public int mStatus;
-    public City mCity;
+    public LocationStatus mStatus = LocationStatus.STATUS_INIT;
+    public ICity mCity;
 }

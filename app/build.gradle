@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "cf.sadhu.citypicker"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -14,7 +14,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro',''
         }
     }
 }
@@ -29,7 +29,15 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:${supportVersion}"
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-
+    compile 'com.amap.api:location:3.4.1'
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    ext.permissionsdispatcherVersion = "2.4.0"
+    compile("com.github.hotchemi:permissionsdispatcher:${permissionsdispatcherVersion}") {
+        // if you don't use android.app.Fragment you can exclude support for them
+        exclude module: "support-v13"
+    }
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:${permissionsdispatcherVersion}"
+    compile 'com.github.promeg:tinypinyin:2.0.3' // TinyPinyin核心包，约80KB
+    compile 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.3' // 可选，适用于Android的中国地区词典
 }

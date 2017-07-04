@@ -8,6 +8,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cf.sadhu.citypicker.R;
 import cf.sadhu.citypicker.domain.LocationInfo;
+import cf.sadhu.citypicker.domain.LocationStatus;
 import cf.sadhu.citypicker.util.UIUtils;
 
 /**
@@ -25,18 +26,18 @@ public class CityLocationVH extends RecyclerView.ViewHolder {
         mLocationName.setMinWidth(
                 (UIUtils.getScreenWidth(itemView.getContext())
                         - UIUtils.getDimmens(itemView.getContext(), R.dimen.naviBarWidth)
-                        - UIUtils.getDimmens(itemView.getContext(), R.dimen.itemPadding )* 2
-                        - UIUtils.getDimmens(itemView.getContext(), R.dimen.itemSpace )* 2) / 3);
+                        - UIUtils.getDimmens(itemView.getContext(), R.dimen.itemPadding) * 2
+                        - UIUtils.getDimmens(itemView.getContext(), R.dimen.itemSpace) * 2) / 3);
 
     }
 
     public void bindData(LocationInfo info) {
-
-
-        if (info == null || info.mStatus == 0) {
+        if (info == null || info.mStatus == LocationStatus.STATUS_INIT) {
             mLocationName.setText("正在定位...");
-        } else if (info.mStatus == 1 && info.mCity != null) {
+        } else if (info.mStatus == LocationStatus.STATUS_SUCCESS && info.mCity != null) {
             mLocationName.setText(info.mCity.getCityName());
+        } else if (info.mStatus == LocationStatus.STATUS_PERMISSION_ERROR) {
+            mLocationName.setText("权限错误");
         } else {
             mLocationName.setText("定位失败");
         }

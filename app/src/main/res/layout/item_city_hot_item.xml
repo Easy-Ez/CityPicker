@@ -4,7 +4,7 @@
           android:id="@+id/tv_city_name"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:background="@drawable/shape_solid_00_stroke_e2_corners_4"
+          android:background="@drawable/shape_solid_00_stroke_33_corners_4"
           android:gravity="center"
           android:padding="12dp"
           android:textColor="@color/color33"
