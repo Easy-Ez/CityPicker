@@ -82,7 +82,6 @@ public class FloatTagItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-
         View firstView = parent.getChildAt(0);
         View secondView = parent.getChildAt(1);
         if (firstView != null && secondView != null) {
