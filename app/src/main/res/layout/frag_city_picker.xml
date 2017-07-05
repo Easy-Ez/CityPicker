@@ -22,8 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
+            android:padding="4dp"
             app:selectTextColor="@color/color33"
             app:textColor="@color/color99"/>
     </FrameLayout>
