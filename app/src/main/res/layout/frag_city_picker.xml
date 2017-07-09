@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -14,8 +14,9 @@
             android:id="@+id/rv_city_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
-            tools:listitem="@layout/item_city_normal"/>
+            tools:listitem="@layout/item_city_normal" />
 
         <cf.sadhu.citypicker.view.CityNaviBarView
             android:id="@+id/navibar"
@@ -24,6 +25,6 @@
             android:layout_gravity="end|center"
             android:padding="4dp"
             app:selectTextColor="@color/color33"
-            app:textColor="@color/color99"/>
+            app:textColor="@color/color99" />
     </FrameLayout>
 </LinearLayout>
