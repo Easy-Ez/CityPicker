@@ -4,4 +4,6 @@
     <string name="title_settings_dialog">Permissions Required</string>
     <string name="search">搜索</string>
     <string name="city_pick">城市选择</string>
+    <string name="please_input_city_name">请输入城市名称或者拼音</string>
+    <string name="clear_search_history">清除搜索历史</string>
 </resources>

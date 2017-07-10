@@ -1,4 +1,4 @@
-package cf.sadhu.citypicker;
+package cf.sadhu.citypicker.ui.fragment;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -20,10 +20,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import cf.sadhu.citypicker.R;
 import cf.sadhu.citypicker.adapter.CityAdapter;
 import cf.sadhu.citypicker.callback.OnLocationCallback;
+import cf.sadhu.citypicker.db.CityDBManager;
 import cf.sadhu.citypicker.domain.ICity;
-import cf.sadhu.citypicker.domain.LocationInfo;
 import cf.sadhu.citypicker.domain.NaviInfo;
 import cf.sadhu.citypicker.engine.AMapLocationEngineImpl;
 import cf.sadhu.citypicker.engine.ILocationEngine;
@@ -47,21 +48,20 @@ import permissions.dispatcher.RuntimePermissions;
 public class CityPickerFragment extends Fragment {
 
     private static final String TAG = "CityPickerFragment";
-    private DBManager mDbManager;
+    private CityDBManager mCityDbManager;
     private RecyclerView mRvCity;
     private CityNaviBarView mNaviBarView;
     private CityAdapter mCityAdapter;
     private LinearLayoutManager mLinearLayoutManager;
     private NaviPopupWindow mPopupWindow;
     private ILocationEngine mEngine;
-    private LocationInfo mLocationInfo;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_city_picker, container, false);
-        mDbManager = new DBManager();
-        Toast.makeText(getContext(), mDbManager.initCityDB(getContext()) ? "初始化成功" : "初始化失败", Toast.LENGTH_SHORT).show();
+        mCityDbManager = new CityDBManager();
+        // Toast.makeText(getContext(), mCityDbManager.initCityDB(getContext()) ? "初始化成功" : "初始化失败", Toast.LENGTH_SHORT).show();
         mRvCity = (RecyclerView) view.findViewById(R.id.rv_city_list);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mRvCity.setLayoutManager(mLinearLayoutManager);
@@ -81,22 +81,21 @@ public class CityPickerFragment extends Fragment {
             }
         });
         mPopupWindow = new NaviPopupWindow(getContext());
-        pullCites();
+        initData();
         return view;
     }
 
 
-    private void pullCites() {
+    private void initData() {
         // 从数据库获取
-        List<ICity> normalCities = mDbManager.getCityList(getContext());
-        mLocationInfo = new LocationInfo();
-        mCityAdapter = new CityAdapter(normalCities, mLocationInfo);
+        List<ICity> normalCities = mCityDbManager.queryAll(getContext());
+        mCityAdapter = new CityAdapter(normalCities);
         // 设置热门城市
         List<ICity> hotCities = normalCities.subList(0, 7);
         mCityAdapter.setHotCity(hotCities);
         mRvCity.setAdapter(mCityAdapter);
         // 设置导航bar的tag list
-        mNaviBarView.setTagList(getTagList(normalCities, hotCities));
+        mNaviBarView.setTagList(getTagList(normalCities));
         CityPickerFragmentPermissionsDispatcher.getLocationInfoWithCheck(this);
     }
 
@@ -104,15 +103,12 @@ public class CityPickerFragment extends Fragment {
      * 获取tag列表
      *
      * @param cityList
-     * @param hotCityList
      * @return
      */
-    private Map<String, NaviInfo> getTagList(List<ICity> cityList, List<ICity> hotCityList) {
+    private Map<String, NaviInfo> getTagList(List<ICity> cityList) {
         Map<String, NaviInfo> naviMap = new LinkedHashMap<>();
         naviMap.put("定位", new NaviInfo(0));
-        if (hotCityList.size() > 0) {
-            naviMap.put("热门", new NaviInfo(1));
-        }
+        naviMap.put("热门", new NaviInfo(1));
         int size = naviMap.size();
         naviMap.put(String.valueOf(cityList.get(0).getFirstChar()).toUpperCase(),
                 new NaviInfo(size));

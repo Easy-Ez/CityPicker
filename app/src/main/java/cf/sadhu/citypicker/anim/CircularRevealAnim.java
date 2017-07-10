@@ -1,4 +1,4 @@
-package cf.sadhu.citypicker;
+package cf.sadhu.citypicker.anim;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

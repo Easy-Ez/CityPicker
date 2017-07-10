@@ -7,6 +7,10 @@ package cf.sadhu.citypicker.domain;
 public class SearchHistory extends City {
     public long operateTime;
 
+    public SearchHistory(String name, String pinYin) {
+        super(name, pinYin);
+    }
+
     public SearchHistory(String name, String pinYin, long operateTime) {
         super(name, pinYin);
         this.operateTime = operateTime;

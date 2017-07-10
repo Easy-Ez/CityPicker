@@ -27,9 +27,9 @@ public class CityAdapter extends RecyclerView.Adapter {
     private List<ICity> mNormalCities;
     private LocationInfo mLocationInfo;
 
-    public CityAdapter(List<ICity> cityList, LocationInfo info) {
+    public CityAdapter(List<ICity> cityList) {
         this.mNormalCities = cityList;
-        this.mLocationInfo = info;
+        this.mLocationInfo = new LocationInfo();
     }
 
     @Override

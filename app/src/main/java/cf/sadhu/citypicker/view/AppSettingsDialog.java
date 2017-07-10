@@ -18,7 +18,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 
-import cf.sadhu.citypicker.AppSettingsDialogHolderActivity;
+import cf.sadhu.citypicker.ui.activity.AppSettingsDialogHolderActivity;
 import cf.sadhu.citypicker.R;
 import cf.sadhu.citypicker.util.PermissionsUtils;
 

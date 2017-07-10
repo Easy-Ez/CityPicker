@@ -1,4 +1,4 @@
-package cf.sadhu.citypicker;
+package cf.sadhu.citypicker.ui.activity;
 
 
 import android.app.Activity;

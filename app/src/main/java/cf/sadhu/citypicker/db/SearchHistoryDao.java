@@ -18,9 +18,9 @@ import static cf.sadhu.citypicker.db.SearchHistoryContract.SearchHistoryEntry.TA
 
 /**
  * Created by sadhu on 2017/7/9.
- * 描述:
+ * 描述: 搜索历史dao类
  */
-public class SearchHistoryDao implements Dao<SearchHistory> {
+public class SearchHistoryDao {
 
     private final SQLiteOpenHelper mHelper;
 
@@ -28,8 +28,7 @@ public class SearchHistoryDao implements Dao<SearchHistory> {
         mHelper = AppSQLiteOpenHelper.getInstance(context);
     }
 
-    @Override
-    public List<SearchHistory> queryAll() {
+    public List<SearchHistory> queryWithLimit(int limit) {
         List<SearchHistory> list = new ArrayList<>();
         SQLiteDatabase db = mHelper.getReadableDatabase();
         Cursor query = db.query(TABLE_NAME,
@@ -38,7 +37,8 @@ public class SearchHistoryDao implements Dao<SearchHistory> {
                 null,
                 null,
                 null,
-                COLUMN_NAME_OP_TIME + "ASC");
+                COLUMN_NAME_OP_TIME + " DESC",
+                String.valueOf(limit));
         while (query.moveToNext()) {
             list.add(new SearchHistory(query.getString(query.getColumnIndex(COLUMN_NAME_CITY_NAME)),
                     query.getString(query.getColumnIndex(COLUMN_NAME_PINYIN)),
@@ -49,16 +49,19 @@ public class SearchHistoryDao implements Dao<SearchHistory> {
         return list;
     }
 
-    @Override
-    public boolean inseart(SearchHistory searchHistory) {
+    public boolean createOrUpdate(SearchHistory searchHistory) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME_CITY_NAME, searchHistory.getCityName());
         contentValues.put(COLUMN_NAME_PINYIN, searchHistory.getCityPinYin());
         contentValues.put(COLUMN_NAME_OP_TIME, searchHistory.getOperateTime());
-        long id = db.insert(TABLE_NAME, null, contentValues);
+        long id = db.replace(TABLE_NAME, null, contentValues);
         db.close();
         return id != -1;
     }
 
+    public void deleteAll() {
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
+    }
 }

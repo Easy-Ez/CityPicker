@@ -1,5 +1,6 @@
-package cf.sadhu.citypicker;
+package cf.sadhu.citypicker.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,15 +10,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import cf.sadhu.citypicker.R;
+import cf.sadhu.citypicker.domain.ICity;
+import cf.sadhu.citypicker.ui.fragment.CityPickerFragment;
+import cf.sadhu.citypicker.ui.fragment.SearchFragment;
+
+public class CityPickerActivity extends AppCompatActivity implements SearchFragment.OnSelectCityListener {
 
     private Toolbar mToolbar;
-
+    public static final String EXTRA_NAME = "city";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_main);
+        setContentView(R.layout.act_city_picker);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -53,4 +59,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onSelectCity(ICity city) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_NAME, city);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 }
