@@ -61,6 +61,7 @@ public class CityPickerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_city_picker, container, false);
         mCityDbManager = new CityDBManager();
+        mCityDbManager.initCityDB(getContext());
         // Toast.makeText(getContext(), mCityDbManager.initCityDB(getContext()) ? "初始化成功" : "初始化失败", Toast.LENGTH_SHORT).show();
         mRvCity = (RecyclerView) view.findViewById(R.id.rv_city_list);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
